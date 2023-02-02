@@ -144,5 +144,71 @@ namespace BaseDados
                 conexao.Close();
             }
         }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            string strConnection = "server=127.0.0.1;User Id=root;database=cadastro_db";
+            MySqlConnection conexao = new MySqlConnection(strConnection);
+
+            try
+            {
+                conexao.Open();
+
+                MySqlCommand comando = new MySqlCommand();
+                comando.Connection = conexao;
+
+                int id = (int)lista.SelectedRows[0].Cells[0].Value;
+
+                comando.CommandText = "DELETE FROM pessoas WHERE id = '" + id + "'";
+
+                comando.ExecuteNonQuery();
+
+                lblResultado.Text = "Registro excluido MySql";
+                comando.Dispose();
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+            }
+            finally
+            {
+                conexao.Close();
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            string strConnection = "server=127.0.0.1;User Id=root;database=cadastro_db";
+            MySqlConnection conexao = new MySqlConnection(strConnection);
+
+            try
+            {
+                conexao.Open();
+
+                MySqlCommand comando = new MySqlCommand();
+                comando.Connection = conexao;
+
+                int id = (int)lista.SelectedRows[0].Cells[0].Value;
+                string nome = txtNome.Text;
+                string email = txtEmail.Text;
+
+                string query = "UPDATE pessoas SET nome = '" + nome + "' , email = '" + email +"' WHERE id LIKE '"+ id + "'";
+
+                comando.CommandText = query;
+
+                comando.ExecuteNonQuery();
+
+                lblResultado.Text = "Registro editado MySql";
+                comando.Dispose();
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+            }
+            finally
+            {
+                conexao.Close();
+            }
+        }
     }
 }
